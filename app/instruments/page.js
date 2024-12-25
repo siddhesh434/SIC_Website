@@ -5,11 +5,9 @@ import { Spinner } from "@nextui-org/react";
 
 const InstrumentCard = ({ instrument }) => {
   const sliceInfo = (info) => {
-    // console.log(info,"loki",instrument.name)
     const words = info.split(" ");
     return words.slice(0, 10).join(" ") + "...";
   };
-  // console.log(instrument,"i")
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -63,9 +61,8 @@ const InstrumentList = () => {
           throw new Error(`Failed to fetch instruments: ${response.status}`);
         }
         const data = await response.json();
-        // console.log(data,"huhuu")
         setInstruments(data);
-        setLoading(false); // Set loading to false after fetching
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching instruments:", error);
       }
@@ -85,9 +82,13 @@ const InstrumentList = () => {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {instruments.map((instrument) => (
-            <InstrumentCard key={instrument.id} instrument={instrument} />
-          ))}
+          {Array.isArray(instruments) ? (
+            instruments.map((instrument) => (
+              <InstrumentCard key={instrument.id} instrument={instrument} />
+            ))
+          ) : (
+            <p>No instruments available.</p>
+          )}
         </div>
       )}
     </div>
